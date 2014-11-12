@@ -1,0 +1,17 @@
+## Interface: 50200
+## Author: Udonnoodle
+## Title: oUF_Ambrosia
+## Version: 0.1 beta
+## RequiredDeps: oUF
+## X-Category: UnitFrame
+
+cfg.lua
+lib.lua
+core.lua
+tags.lua
+
+elements\oUF_MonkHarmonyBar.lua
+elements\oUF_HolyPower.lua
+elements\Smooth.lua
+elements\ArcaneCharges.lua
+elements\oUF_WarlockSpecBars.lua
