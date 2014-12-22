@@ -15,7 +15,6 @@ local Colors = {
 	[5] = {.33, .63, .33, 1},
 }
 
-
 local Update = function(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= "CHI")) then return end
 
@@ -27,8 +26,14 @@ local Update = function(self, event, unit, powerType)
 	if curMaxPower ~= maxPower then
 		if maxPower == 4 then
 			mhb[5]:Hide()
-		elseif maxPower == 5 then
+		elseif maxPower > 4 then
 			mhb[5]:Show()
+		end
+		
+		if maxPower == 6 then
+			mhb[6]:Show()
+		else
+			mhb[6]:Hide()
 		end
 		curMaxPower = maxPower
 	end
@@ -41,7 +46,6 @@ local Update = function(self, event, unit, powerType)
 		end
 	end
 	
-
 	if(mhb.PostUpdate) then
 		return mhb:PostUpdate(spec)
 	end
@@ -69,7 +73,7 @@ local function Enable(self)
 		mhb.Visibility:RegisterEvent("PLAYER_TALENT_UPDATE", Path)
 		--mhb.Visibility:SetScript("OnEvent", function(frame, event, unit) Visibility(self, event, unit) end)
 
-		for i = 1, 5 do
+		for i = 1, 6 do
 			local Point = mhb[i]
 			if not Point:GetStatusBarTexture() then
 				Point:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])

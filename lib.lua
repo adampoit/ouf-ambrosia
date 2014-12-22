@@ -299,14 +299,15 @@ lib.addSecondaryPowerBar = function(f)
 	local s = CreateFrame("Frame", nil, f)
 	s:SetFrameLevel(1)
 	
-	local spec = GetSpecializationInfo(GetSpecialization())
+	local spec = GetSpecialization()
+	local specInfo = spec and GetSpecializationInfo(spec) or nil
 	
 	local maxPower = 0
 	if playerClass == "ROGUE" then
 		maxPower = MAX_COMBO_POINTS
 	elseif playerClass == "MONK" then
-		maxPower = 5
-	elseif playerClass == "MAGE" and spec == 62 then
+		maxPower = 6
+	elseif playerClass == "MAGE" and specInfo == 62 then
 		maxPower = 4
 	elseif playerClass == "PALADIN" then
 		maxPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER)
@@ -314,6 +315,8 @@ lib.addSecondaryPowerBar = function(f)
 		maxPower = 6
 	elseif playerClass == "WARLOCK" then
 		maxPower = 4
+	elseif playerClass == "PRIEST" and specInfo == 258 then
+		maxPower = UnitPowerMax('player', SPELL_POWER_SHADOW_ORBS)
 	end
 	
 	for i = maxPower, 1, -1 do
@@ -351,11 +354,12 @@ lib.addSecondaryPowerBar = function(f)
 		f.MonkHarmonyBar = s
 		f.MonkHarmonyBar.PreUpdate = function()
 			local currMaxPower = UnitPowerMax("player",SPELL_POWER_CHI)
-			for i = 1, 5 do
+			for i = 1, 6 do
 				s[i]:SetWidth(((cfg.secondarypowerWidth)-(currMaxPower - 1))/ currMaxPower) 
 			end
+			s[currMaxPower]:SetPoint("RIGHT", s)
 		end
-	elseif playerClass == "MAGE" and spec == 62 then
+	elseif playerClass == "MAGE" and specInfo == 62 then
 		f.ArcaneCharges = s
 	elseif playerClass == "PALADIN" then
 		f.PaladinHolyPower = s
@@ -363,6 +367,8 @@ lib.addSecondaryPowerBar = function(f)
 		f.Runes = s
 	elseif playerClass == "WARLOCK" then
 		f.WarlockSpecBars = s
+	elseif playerClass == "PRIEST" and specInfo == 258 then
+		f.PriestShadowOrbs = s
 	end
 		
 	f.SecondaryPower = s
@@ -579,8 +585,9 @@ lib.gen_InfoIcons = function(f)
 end
 
 lib.createStaggerBar = function(f)
-	local spec = GetSpecializationInfo(GetSpecialization())
-	if spec ~= 268 then return end
+	local spec = GetSpecialization()
+	local specInfo = spec and GetSpecializationInfo(spec) or nil
+	if specInfo ~= 268 then return end
 	
 	local s = CreateFrame("StatusBar", nil, f)
 	s:SetFrameLevel(1)
@@ -612,7 +619,7 @@ lib.createStaggerBar = function(f)
 end
 
 lib.createExpTags = function(f)	
-	local maxLevel = UnitLevel("player") == 90
+	local maxLevel = UnitLevel("player") == 100
 	
 	if maxLevel then
 		repval = lib.gen_fontstring(f, cfg.font, 15, "OUTLINE")
